@@ -1,13 +1,17 @@
-import { Navigate } from 'react-router-dom';
-import { useAuth, UserRole } from '@/contexts/AuthContext';
+import { Navigate } from "react-router-dom";
+import { useAuth, UserRole } from "@/contexts/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredRole?: UserRole[];
 }
 
-export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
-  const { user, isLoading } = useAuth();
+export const ProtectedRoute = ({
+  children,
+  requiredRole,
+}: ProtectedRouteProps) => {
+  const { user, isLoading, firstTime } = useAuth();
+  console.log("we are inside the protected Route");
 
   if (isLoading) {
     return (
@@ -20,7 +24,7 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
     );
   }
 
-  if (!user) {
+  if (!user || !firstTime) {
     return <Navigate to="/login" replace />;
   }
 
@@ -29,7 +33,9 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-2">Access Denied</h1>
-          <p className="text-muted-foreground">You don't have permission to view this page.</p>
+          <p className="text-muted-foreground">
+            You don't have permission to view this page.
+          </p>
         </div>
       </div>
     );
