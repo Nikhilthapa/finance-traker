@@ -36,11 +36,7 @@ const App = () => (
               <Route path="/signup" element={<Signup />} />
               <Route
                 path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
+                element={<Dashboard />}
               />
               <Route
                 path="/transactions"
