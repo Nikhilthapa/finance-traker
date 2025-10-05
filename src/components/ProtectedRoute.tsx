@@ -24,7 +24,7 @@ export const ProtectedRoute = ({
     );
   }
 
-  if (!user || !firstTime) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 

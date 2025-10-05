@@ -1,15 +1,27 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Navigation } from '@/components/Navigation';
-import { TransactionList } from '@/components/TransactionList';
-import { TransactionForm } from '@/components/TransactionForm';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Search } from 'lucide-react';
-import { getTransactions, Transaction } from '@/services/api';
-import { toast } from 'sonner';
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { Navigation } from "@/components/Navigation";
+import { TransactionList } from "@/components/TransactionList";
+import { TransactionForm } from "@/components/TransactionForm";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Plus, Search } from "lucide-react";
+import { getTransactions, Transaction } from "@/services/api";
+import { toast } from "sonner";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -17,13 +29,14 @@ const Transactions = () => {
   const { user } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+  const [editingTransaction, setEditingTransaction] =
+    useState<Transaction | null>(null);
 
-  const isReadOnly = user?.role === 'read-only';
+  const isReadOnly = user?.role === "read-only";
 
   useEffect(() => {
     loadTransactions();
@@ -33,37 +46,37 @@ const Transactions = () => {
     try {
       setIsLoading(true);
       const data = await getTransactions();
-      setTransactions(data);
+      setTransactions(data.data);
     } catch (error) {
-      console.error('Failed to load transactions:', error);
+      console.error("Failed to load transactions:", error);
       // Mock data for demo
       setTransactions([
         {
-          id: '1',
+          id: "1",
           amount: 50,
-          category: 'Food',
-          type: 'expense',
-          description: 'Grocery shopping',
-          date: '2025-01-15',
-          userId: user?.id || '',
+          category: "Food",
+          type: "expense",
+          description: "Grocery shopping",
+          date: "2025-01-15",
+          userId: user?.id || "",
         },
         {
-          id: '2',
+          id: "2",
           amount: 3000,
-          category: 'Salary',
-          type: 'income',
-          description: 'Monthly salary',
-          date: '2025-01-01',
-          userId: user?.id || '',
+          category: "Salary",
+          type: "income",
+          description: "Monthly salary",
+          date: "2025-01-01",
+          userId: user?.id || "",
         },
         {
-          id: '3',
+          id: "3",
           amount: 30,
-          category: 'Transport',
-          type: 'expense',
-          description: 'Uber ride',
-          date: '2025-01-20',
-          userId: user?.id || '',
+          category: "Transport",
+          type: "expense",
+          description: "Uber ride",
+          date: "2025-01-20",
+          userId: user?.id || "",
         },
       ]);
     } finally {
@@ -73,9 +86,13 @@ const Transactions = () => {
 
   const filteredTransactions = useMemo(() => {
     return transactions.filter((transaction) => {
-      const matchesSearch = transaction.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      const matchesSearch =
+        transaction.description
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
         transaction.category.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = categoryFilter === 'all' || transaction.category === categoryFilter;
+      const matchesCategory =
+        categoryFilter === "all" || transaction.category === categoryFilter;
       return matchesSearch && matchesCategory;
     });
   }, [transactions, searchTerm, categoryFilter]);
@@ -96,26 +113,34 @@ const Transactions = () => {
     loadTransactions();
     setIsDialogOpen(false);
     setEditingTransaction(null);
-    toast.success(editingTransaction ? 'Transaction updated' : 'Transaction added');
+    toast.success(
+      editingTransaction ? "Transaction updated" : "Transaction added"
+    );
   }, [editingTransaction, loadTransactions]);
 
-  const handleEdit = useCallback((transaction: Transaction) => {
-    if (isReadOnly) {
-      toast.error('You do not have permission to edit transactions');
-      return;
-    }
-    setEditingTransaction(transaction);
-    setIsDialogOpen(true);
-  }, [isReadOnly]);
+  const handleEdit = useCallback(
+    (transaction: Transaction) => {
+      if (isReadOnly) {
+        toast.error("You do not have permission to edit transactions");
+        return;
+      }
+      setEditingTransaction(transaction);
+      setIsDialogOpen(true);
+    },
+    [isReadOnly]
+  );
 
-  const handleDelete = useCallback(async (id: string) => {
-    if (isReadOnly) {
-      toast.error('You do not have permission to delete transactions');
-      return;
-    }
-    setTransactions((prev) => prev.filter((t) => t.id !== id));
-    toast.success('Transaction deleted');
-  }, [isReadOnly]);
+  const handleDelete = useCallback(
+    async (id: string) => {
+      if (isReadOnly) {
+        toast.error("You do not have permission to delete transactions");
+        return;
+      }
+      setTransactions((prev) => prev.filter((t) => t.id !== id));
+      toast.success("Transaction deleted");
+    },
+    [isReadOnly]
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -125,7 +150,10 @@ const Transactions = () => {
           <h1 className="text-3xl font-bold">Transactions</h1>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button disabled={isReadOnly} onClick={() => setEditingTransaction(null)}>
+              <Button
+                disabled={isReadOnly}
+                onClick={() => setEditingTransaction(null)}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Add Transaction
               </Button>
@@ -133,7 +161,9 @@ const Transactions = () => {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>
-                  {editingTransaction ? 'Edit Transaction' : 'Add New Transaction'}
+                  {editingTransaction
+                    ? "Edit Transaction"
+                    : "Add New Transaction"}
                 </DialogTitle>
               </DialogHeader>
               <TransactionForm
@@ -194,16 +224,18 @@ const Transactions = () => {
               Previous
             </Button>
             <div className="flex items-center gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <Button
-                  key={page}
-                  variant={currentPage === page ? 'default' : 'outline'}
-                  onClick={() => setCurrentPage(page)}
-                  size="sm"
-                >
-                  {page}
-                </Button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    onClick={() => setCurrentPage(page)}
+                    size="sm"
+                  >
+                    {page}
+                  </Button>
+                )
+              )}
             </div>
             <Button
               variant="outline"

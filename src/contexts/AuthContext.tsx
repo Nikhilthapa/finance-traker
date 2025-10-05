@@ -22,7 +22,7 @@ interface AuthContextType {
   firstTime: boolean;
   user: User | null;
   token: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, role: string) => Promise<void>;
   signup: (
     name: string,
     email: string,
@@ -42,12 +42,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const firstTime = localStorage.getItem("firsttime");
-    if (firstTime) {
-      let makeBoolean = firstTime == "true" ? true : false;
-      setfirstTime(makeBoolean);
-    }
-    // Check for existing token on mount
     const storedToken = localStorage.getItem("token");
     // console.log("checking this one", storedToken);
     const storedUser = localStorage.getItem("user");
@@ -59,14 +53,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, role: string) => {
     setIsLoading(true);
     try {
       // Placeholder API call - replace with actual endpoint
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, role }),
       });
 
       if (!response.ok) throw new Error("Login failed");
@@ -105,15 +99,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!response.ok) throw new Error("Signup failed");
 
       const data = await response.json();
-      console.log("this is data", data);
-      if (data) localStorage.setItem("firsttime", "true");
-      // const { token, user } = data;
+      // console.log("this is data", data);
+      // if (data) localStorage.setItem("firsttime", "true");
+      const { token, user } = data;
 
-      // localStorage.setItem("token", token);
-      // localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
-      // setToken(token);
-      // setUser(user);
+      setToken(token);
+      setUser(user);
     } catch (error) {
       console.error("Signup error:", error);
       throw error;

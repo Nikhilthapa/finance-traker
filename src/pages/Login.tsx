@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth, UserRole } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,23 +11,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Wallet } from "lucide-react";
 import { toast } from "sonner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<UserRole>("user");
   const [isLoading, setIsLoading] = useState(false);
   const { login, user, firstTime } = useAuth();
   const navigate = useNavigate();
-  // Redirect if already logged in
-  // useEffect(() => {
-  //   if (user || firstTime) {
-  //     navigate("/dashboard");
-  //   }
-  // }, [user, firstTime, navigate]);
 
-  if (user || firstTime) {
+  if (user) {
     return <Navigate to="/dashboard" replace />;
   }
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,7 +42,7 @@ const Login = () => {
 
     setIsLoading(true);
     try {
-      await login(email, password);
+      await login(email, password, role);
       toast.success("Welcome back!");
       navigate("/dashboard");
     } catch (error) {
@@ -89,6 +91,26 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="role">Account Type</Label>
+              <Select
+                value={role}
+                onValueChange={(value) => setRole(value as UserRole)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="user">
+                    User - Manage your finances
+                  </SelectItem>
+                  <SelectItem value="admin">Admin - Full access</SelectItem>
+                  <SelectItem value="read-only">
+                    Read-Only - View only
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign In"}

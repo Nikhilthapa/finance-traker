@@ -16,6 +16,7 @@ import {
   PieChart as PieChartIcon,
 } from "lucide-react";
 import { getAnalytics, AnalyticsData } from "@/services/api";
+import dashBoardData from "@/contexts/dashboard.context";
 
 // Lazy load chart components
 const ExpensesPieChart = lazy(
@@ -38,12 +39,13 @@ const ChartSkeleton = () => (
     </CardContent>
   </Card>
 );
-console.log("I am talking inside ChartSkeleton");
 
 const Dashboard = () => {
+  // console.log("I am talking inside ChartSkeleton");
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  console.log("I am talking inside dashboard");
+  // const [data] = dashBoardData();
+  // console.log("I am talking inside dashboard");
 
   useEffect(() => {
     loadAnalytics();
@@ -53,7 +55,7 @@ const Dashboard = () => {
     try {
       setIsLoading(true);
       const analyticsData = await getAnalytics();
-      setData(analyticsData);
+      setData(analyticsData.data);
     } catch (error) {
       console.error("Failed to load analytics:", error);
       // Use mock data for demo

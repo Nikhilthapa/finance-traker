@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:3001", // dynamically from env
+        target: "http://3.111.36.107:3001", // dynamically from env
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

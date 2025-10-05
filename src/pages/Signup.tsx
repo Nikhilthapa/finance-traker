@@ -32,7 +32,7 @@ const Signup = () => {
 
   // Redirect if already logged in
 
-  if (user || firstTime) {
+  if (user) {
     return <Navigate to="/dashboard" replace />;
     // navigate("/dashboard");
     // return null;
