@@ -1,6 +1,6 @@
 // API service with placeholder functions for backend integration
 
-const API_BASE_URL = "/api";
+const API_BASE_URL = "http://43.204.142.150:3001";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -61,7 +61,7 @@ export const getTransactions = async (params?: {
   //     headers: getAuthHeaders(),
   //   }
   // );
-  const response = await fetch(`${API_BASE_URL}/user/transactions`, {
+  const response = await fetch(`http://43.204.142.150:3001/user/transactions`, {
     method: "GET",
     headers: getAuthHeaders(),
   });
@@ -73,11 +73,14 @@ export const getTransactions = async (params?: {
 export const addTransaction = async (
   data: Omit<Transaction, "id" | "userId">
 ) => {
-  const response = await fetch(`${API_BASE_URL}/user/add/transactions`, {
-    method: "POST",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(data),
-  });
+  const response = await fetch(
+    `http://43.204.142.150:3001/user/add/transactions`,
+    {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    }
+  );
   return response.json();
 };
 
@@ -116,7 +119,7 @@ export const getAnalytics = async () => {
   // const response = await fetch(`${API_BASE_URL}/user/dashboard`, {
   //   headers: getAuthHeaders(),
   // });
-  const response = await fetch(`http://3.111.36.107:3001/user/dashboard`, {
+  const response = await fetch(`http://43.204.142.150:3001/user/dashboard`, {
     headers: getAuthHeaders(),
   });
   return response.json();
