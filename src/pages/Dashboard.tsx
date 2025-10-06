@@ -16,7 +16,7 @@ import {
   PieChart as PieChartIcon,
 } from "lucide-react";
 import { getAnalytics, AnalyticsData } from "@/services/api";
-import dashBoardData from "@/contexts/dashboard.context";
+// import dashBoardData from "@/contexts/dashboard.context";
 
 // Lazy load chart components
 const ExpensesPieChart = lazy(

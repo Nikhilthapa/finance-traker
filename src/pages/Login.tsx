@@ -116,7 +116,7 @@ const Login = () => {
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm">
+          {/* <div className="mt-4 text-center text-sm">
             <span className="text-muted-foreground">
               Don't have an account?{" "}
             </span>
@@ -126,7 +126,7 @@ const Login = () => {
             >
               Sign up
             </Link>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </div>
