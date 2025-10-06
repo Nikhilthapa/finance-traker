@@ -91,11 +91,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     try {
       // Placeholder API call - replace with actual endpoint
-      const response = await fetch(`http://3.111.36.107:3001/user/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, role }),
-      });
+      const response = await fetch(
+        `https://rbac-tech-bridge.vercel.app/user/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password, role }),
+        }
+      );
 
       if (!response.ok) throw new Error("Signup failed");
 
