@@ -29,8 +29,6 @@ A modern, full-stack finance tracking application built with React and TypeScrip
 ### Backend
 - **Lovable Cloud** - Backend infrastructure
 - **Authentication** - Secure user authentication
-- **Database** - Data persistence
-- **API Integration** - External API connectivity
 
 ## Getting Started
 
@@ -148,13 +146,6 @@ The application uses a semantic token-based design system with:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License.
-
-## Support
-
-For support, please open an issue in the repository or contact the development team.
 
 ---
 
