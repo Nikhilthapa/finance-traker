@@ -113,7 +113,10 @@ export interface AnalyticsData {
 }
 
 export const getAnalytics = async () => {
-  const response = await fetch(`${API_BASE_URL}/user/dashboard`, {
+  // const response = await fetch(`${API_BASE_URL}/user/dashboard`, {
+  //   headers: getAuthHeaders(),
+  // });
+  const response = await fetch(`http://3.111.36.107:3001/user/dashboard`, {
     headers: getAuthHeaders(),
   });
   return response.json();

@@ -21,28 +21,3 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
-// export default defineConfig(({ mode }) => {
-//   // Load env variables based on the current mode (development, production)
-//   const env = loadEnv(mode, process.cwd(), "");
-//   // Third param "" means do not require prefix, you can also use "VITE_" if you want
-
-//   // console.log("Env API:", env.VITE_API_URL); // just to check
-
-//   return {
-//     server: {
-//       proxy: {
-//         "/api": {
-//           target: "http://localhost:3001", // dynamically from env
-//           changeOrigin: true,
-//           rewrite: (path) => path.replace(/^\/api/, ""),
-//         },
-//       },
-//     },
-//     plugins: [react()],
-//     resolve: {
-//       alias: {
-//         "@": path.resolve(__dirname, "./src"),
-//       },
-//     },
-//   };
-// });
