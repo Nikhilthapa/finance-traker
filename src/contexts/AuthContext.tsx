@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(true);
     try {
       // Placeholder API call - replace with actual endpoint
-      const response = await fetch(`https://43.204.142.150:3001/user/login`, {
+      const response = await fetch(`http://43.204.142.150:3001/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, role }),
